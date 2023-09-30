@@ -1,5 +1,5 @@
 from pettingzoo.sisl.oddoneout import pursuit
-env = pursuit.env(render_mode="human", max_cycles=500)
+env = pursuit.env(render_mode="human", max_cycles=1500)
 
 env.reset()
 for agent in env.agent_iter():

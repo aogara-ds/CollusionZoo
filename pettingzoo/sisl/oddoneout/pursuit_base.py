@@ -30,7 +30,7 @@ class Pursuit:
         freeze_evaders: bool = False,
         evader_controller: Optional[PursuitPolicy] = None,
         pursuer_controller: Optional[PursuitPolicy] = None,
-        tag_reward: float = 4,
+        tag_reward: float = 0.01,
         catch_reward: float = 1,
         urgency_reward: float = -0.1,
         surround: bool = True,
@@ -174,7 +174,7 @@ class Pursuit:
             self.screen = None
 
     #################################################################
-    # The functions below are the interface with MultiAgentSiulator #
+    # The functions below are the interface with MultiAgentSimulator #
     #################################################################
 
     @property
@@ -319,6 +319,24 @@ class Pursuit:
                 ),
             )
 
+    def draw_evaders_observations(self):
+        for i in range(self.evader_layer.n_agents()):
+            x, y = self.evader_layer.get_position(i)
+            patch = pygame.Surface(
+                (self.pixel_scale * self.obs_range,
+                 self.pixel_scale * self.obs_range)
+            )
+            patch.set_alpha(128)
+            patch.fill((255, 152, 72))
+            ofst = self.obs_range / 2.0
+            self.screen.blit(
+                patch,
+                (
+                    self.pixel_scale * (x - ofst + 1 / 2),
+                    self.pixel_scale * (y - ofst + 1 / 2),
+                ),
+            )
+
     def draw_pursuers(self):
         for i in range(self.pursuer_layer.n_agents()):
             x, y = self.pursuer_layer.get_position(i)
@@ -337,7 +355,7 @@ class Pursuit:
                 int(self.pixel_scale * x + self.pixel_scale / 2),
                 int(self.pixel_scale * y + self.pixel_scale / 2),
             )
-            col = (0, 0, 255)
+            col = (255, 0, 0)
 
             pygame.draw.circle(self.screen, col, center,
                                int(self.pixel_scale / 3))
@@ -418,6 +436,7 @@ class Pursuit:
         self.draw_model_state()
 
         self.draw_pursuers_observations()
+        self.draw_evaders_observations()
 
         self.draw_evaders()
         self.draw_pursuers()
