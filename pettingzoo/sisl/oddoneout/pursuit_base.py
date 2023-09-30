@@ -30,7 +30,7 @@ class Pursuit:
         freeze_evaders: bool = False,
         evader_controller: Optional[PursuitPolicy] = None,
         pursuer_controller: Optional[PursuitPolicy] = None,
-        tag_reward: float = 2,
+        tag_reward: float = 4,
         catch_reward: float = 1,
         urgency_reward: float = -0.1,
         surround: bool = True,
