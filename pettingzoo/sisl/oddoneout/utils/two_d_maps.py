@@ -8,6 +8,7 @@ def rectangle_map(xs, ys, xb=0.3, yb=0.2):
     Map is a 2D numpy array
     xb and yb are buffers for each dim representing the raio of the map to leave open on each side
     """
+
     rmap = np.zeros((xs, ys), dtype=np.int32)
     for i in range(xs):
         for j in range(ys):
@@ -59,7 +60,8 @@ def multi_scale_map(
     xs,
     ys,
     randomizer,
-    scales=[(3, [0.2, 0.3]), (10, [0.1, 0.2]), (30, [0.05, 0.1]), (150, [0.01, 0.05])],
+    scales=[(3, [0.2, 0.3]), (10, [0.1, 0.2]),
+            (30, [0.05, 0.1]), (150, [0.01, 0.05])],
 ):
     gmap = np.zeros((xs, ys), dtype=np.int32)
     for scale in scales:
@@ -88,14 +90,14 @@ def add_rectangle(input_map, xc, yc, xl, yl):
     else:
         y_lbound, y_upbound = ycc - yll / 2, ycc + yll / 2
 
-    # assert x_lbound >= 0 and x_upbound < xs, "Invalid rectangel config, x out of bounds"
-    # assert y_lbound >= 0 and y_upbound < ys, "Invalid rectangel config, y out of bounds"
+    assert x_lbound >= 0 and x_upbound < xs, "Invalid rectangel config, x out of bounds"
+    assert y_lbound >= 0 and y_upbound < ys, "Invalid rectangel config, y out of bounds"
 
     x_lbound, x_upbound = np.clip([x_lbound, x_upbound], 0, xs)
     y_lbound, y_upbound = np.clip([y_lbound, y_upbound], 0, ys)
 
-    for i in range(x_lbound, x_upbound):
-        for j in range(y_lbound, y_upbound):
+    for i in range(int(x_lbound), int(x_upbound)):
+        for j in range(int(y_lbound), int(y_upbound)):
             input_map[j, i] = -1
     return input_map
 
@@ -110,10 +112,10 @@ def resize(scale, old_mats):
 def simple_soccer_map(xs=6, ys=9):
     assert xs % 2 == 0, "xs must be even"
     smap = np.zeros((xs, ys), dtype=np.int32)
-    smap[0 : xs / 2 - 1, 0] = -1
-    smap[xs / 2 + 1 : xs, 0] = -1
-    smap[0 : xs / 2 - 1, ys - 1] = -1
-    smap[xs / 2 + 1 : xs, ys - 1] = -1
+    smap[0: xs / 2 - 1, 0] = -1
+    smap[xs / 2 + 1: xs, 0] = -1
+    smap[0: xs / 2 - 1, ys - 1] = -1
+    smap[xs / 2 + 1: xs, ys - 1] = -1
     return smap
 
 
